@@ -1,14 +1,22 @@
-const express = require('express');
-const cors = require('cors');
-const app = express();
-const port = 5000;
+const express = require('express')
+const cors = require('cors')
+const app = express()
+const quizRoute = require('./router/quiz')
+const jobsheetRoute = require('./router/jobsheet')
+const port = 5000
 
-app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(cors())
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
+
+const db = require('./models')
+db.sequelize.sync()
 
 app.get('/', (req, res) => {
-    res.send('Hello World!');
-});
+    res.send('Quiz Express JS API by Devrizal Maryuandi')
+})
 
-app.listen(port, () => console.log(`listening on port http://localhost:${port}`));
+app.use('/api/quizzes', quizRoute)
+app.use('/api/jobsheet', jobsheetRoute)
+
+app.listen(port, () => console.log(`App Listening on Port http://localhost:${port}!`))
